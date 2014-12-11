@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Matrix rain</title>
+<style type="text/css">
+div.matrix-div {
+	position: fixed;
+	line-height: 50%;
+}
+</style>
+</head>
+<body >
+<script language="javascript" src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
+<script language="javascript">
+var matrix = function(spec){
+	var that = {};
+	var spec = spec || {
+		min_speed: 10,
+		dense: 0.8
+	};
+
+	var randomInt = function(max){
+		return parseInt(Math.random()*max);
+	};
+
+	var char_size_arr = (function(){
+		var width_span = $('<span>').html("#");
+		$("body").append(width_span);
+		var result = [width_span[0].offsetWidth, width_span[0].offsetHeight];
+		width_span.remove();
+		return result;
+	}());
+
+	var char_width = char_size_arr[0];
+	var char_height = char_size_arr[1];
+
+	var x_width = function(){
+		return parseInt(window.innerWidth / char_width);
+	};
+
+	that.generate_x = function(){
+		return randomInt(x_width())/2 * char_width*2;
+	};
+
+	that.newChar = function(){
+		var char = "";
+		while(!char.match(/[A-Za-z0-9]/)){
+			//char = String.fromCharCode(randomInt(25)+65+randomInt(2)*32);
+			char = String.fromCharCode(randomInt(128));
+			//char = String.fromCharCode(Math.floor(Math.random() * 0xffff));
+		}
+		return char;
+	};
+
+	that.newStrip = function(){
+		var x = that.generate_x();
+		var speed = randomInt(char_height)+ spec.min_speed;
+		var length = randomInt(10)+10;
+		var height = length*char_height;
+		var ttl = (randomInt(window.innerHeight/speed) + length/speed).toFixed();
+
+		var div = $("<div>").addClass("matrix-div")
+						.css({left: x,top: -height}).
+						data({top: -height,ttl: ttl,speed: speed});
+		var color_base = 50;
+		var step = Math.floor((0xff-color_base)/length);
+		for(var j = 0; j<length; j++){
+			var char = that.newChar();
+
+			var color_hex = (color_base + (j+1)*step).toString(16);
+			if(color_hex.length < 2) color_hex = "0"+color_hex;
+
+			var span = $("<span>").html(char).css("color", "#00"+color_hex+"00");
+			div.append(span);
+			div.append("<br/>");
+		}
+		$("body").append(div);
+	};
+
+	that.init = function(){
+		var total = x_width() * spec.dense;
+//		total = 10*2;
+		for(var i=0; i< total; i++){
+			that.newStrip();
+		}
+		$("body").css("background-color", "#000");
+
+		return that;
+	};
+
+	that.flash = function(){
+		var body = $("body");
+		$("div.matrix-div").each(function(){
+			var jq = $(this);
+			var top = jq.data("top");
+			var speed = jq.data("speed");
+			var new_top = top + speed;
+			var ttl = jq.data("ttl") - 1;
+
+			jq.data("ttl", ttl);
+			if(new_top >= window.innerHeight || ttl <= 0){
+				jq.remove();
+				that.newStrip();
+			}else{
+				jq.css("top", new_top).data("top", new_top);
+			}
+		});
+		return that;
+	};
+
+	that.run = function(){
+		setInterval(that.flash, 40);
+	};
+
+	return that;
+};
+
+var MX = matrix();
+MX.init().run();
+</script>
+</body>
+</html>
