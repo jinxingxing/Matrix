@@ -3,3 +3,4 @@
 /.idea
 enter_venv.sh
 run.sh
+*.db
