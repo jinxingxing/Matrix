@@ -1,26 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Matrix rain</title>
+{% extends "_base.html" %}
+
+{% block head%}
 <style type="text/css">
-	* {
-		z-index: 0;
-	}
 	div.matrix-div {
 		position: fixed;
-		line-height: 50%;
+		line-height: 80%;
 		z-index: -1;
 	}
+
+	#footer{
+		color: green;
+	}
+
+	h1{
+		color: red;
+		font-size: xx-large;
+		text-align: center;
+	}
 </style>
-</head>
-<body >
-<script language="javascript" src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
+{{ super() }}
+{% endblock head%}
+
+{% block content %}
+
+<h1>The Matrix</h1>
 <script language="javascript">
 var matrix = function(spec){
 	var that = {};
 	var spec = spec || {
 		min_speed: 10,
-		dense: 0.8
+		dense: 1
 	};
 
 	var randomInt = function(max){
@@ -48,7 +57,7 @@ var matrix = function(spec){
 
 	that.newChar = function(){
 		var char = "";
-		while(!char.match(/[A-Za-z0-9]/)){
+		while(!char.match(/[A-Z0-9]/)){
 			//char = String.fromCharCode(randomInt(25)+65+randomInt(2)*32);
 			char = String.fromCharCode(randomInt(128));
 			//char = String.fromCharCode(Math.floor(Math.random() * 0xffff));
@@ -113,7 +122,7 @@ var matrix = function(spec){
 	};
 
 	that.run = function(){
-		setInterval(that.flash, 40);
+		setInterval(that.flash, 50);
 	};
 
 	return that;
@@ -122,5 +131,6 @@ var matrix = function(spec){
 var MX = matrix();
 MX.init().run();
 </script>
-</body>
-</html>
+
+{{ super() }}
+{% endblock content %}

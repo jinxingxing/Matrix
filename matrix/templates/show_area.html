@@ -1,0 +1,19 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ area.name }}{% endblock %}
+
+{% block content %}
+<dl id="area-info">
+    <dd id="area-name"> {{area.name}}</dd>
+    <dd id="area-creator">{{area.creator.name}}</dd>
+    <dd id="area-create-time">{{area.create_time | timeformat}}</dd>
+    <dd id="area-intro">{{area.intro}}</dd>
+    <dt id="area-members">成员列表：</dt>
+    <dl>
+        {% for member in area.members %}
+        <dd><a href="{{ url_for('user', account=member.account) }}">{{ member["name"] }}</a></dd>
+        {% endfor %}
+    </dl>
+
+</dl>
+{% endblock %}

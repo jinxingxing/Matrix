@@ -1,8 +1,6 @@
-from flask import Flask
+# coding: utf8
+__author__ = 'JinXing'
 
-__version__ = '0.0.1'
 
-app = Flask(__name__)
-
+from setup_app import app
 import views
-

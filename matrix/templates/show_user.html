@@ -1,0 +1,11 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ user.account }} @Matrix{% endblock %}
+
+{% block content %}
+<table id="user-info">
+    <tr id="user-account"><td class="td-left">用户账户: </td><td class="td-right">{{ user.account }}</td></tr>
+    <tr id="user-name"><td class="td-left">用户名: </td><td class="td-right">{{ user.name }}</td></tr>
+    <tr id="user-email"><td class="td-left">email: </td><td class="td-right">{{ user.email }}</td></tr>
+</table>
+{% endblock %}
